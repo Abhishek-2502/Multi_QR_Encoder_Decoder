@@ -4,5 +4,3 @@ pillow
 pyzbar
 cryptography
 
-# docker build -t multiqr .
-# docker run -p 8000:8000 multiqr
