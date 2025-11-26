@@ -268,6 +268,10 @@ def decode_big_qr_to_text(file_stream, passphrase: str | None = None):
         return None, None, dec_err
 
     text, sha_hex, verify_err = unwrap_and_verify_payload(wrapped)
+
+    if (not passphrase) and (sha_hex is None) and (verify_err is None) and (text == wrapped):
+        return None, None, "This QR code appears to be encrypted. Please enter the correct passphrase."
+
     if verify_err:
         # Only real error left is integrity mismatch on JSON-wrapped payload
         return None, sha_hex, verify_err
