@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    /* ===== Scrollbar Styling (Chrome, Edge, Safari) ===== */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a; /* slate-900 */
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155; /* slate-700 */
+      border-radius: 10px;
+      border: 2px solid #0f172a; /* inner spacing effect */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569; /* slate-600 */
+    }
+
+    /* ===== Firefox ===== */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #334155 #0f172a;
+    }
+
+    /* === 3D Cube Container === */
+    .qr-scene {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      perspective: 900px;
+    }
+
+    .qr-cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: qrCubeSpin 16s linear infinite;
+    }
+
+    /* === Cube Faces === */
+    .qr-cube-face {
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(129, 140, 248, 0.8); /* indigo border */
+      background: #4f46e5; /* solid indigo */
+      box-shadow: 0 0 18px rgba(99, 102, 241, 0.6); /* outer blue glow */
+      backface-visibility: hidden; /* 🔥 important */
+    }
+
+    .qr-scene {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      perspective: 900px;
+    }
+
+    .qr-cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: qrCubeSpin 16s linear infinite;
+    }
+
+    /* half of 160px = 80px */
+    .qr-cube-face--front {
+      transform: rotateY(0deg) translateZ(80px);
+    }
+    .qr-cube-face--back {
+      transform: rotateY(180deg) translateZ(80px);
+    }
+    .qr-cube-face--right {
+      transform: rotateY(90deg) translateZ(80px);
+    }
+    .qr-cube-face--left {
+      transform: rotateY(-90deg) translateZ(80px);
+    }
+    .qr-cube-face--top {
+      transform: rotateX(90deg) translateZ(80px);
+    }
+    .qr-cube-face--bottom {
+      transform: rotateX(-90deg) translateZ(80px);
+    }
+
+    @keyframes qrCubeSpin {
+      0% {
+        transform: rotateX(-20deg) rotateY(0deg);
+      }
+      50% {
+        transform: rotateX(20deg) rotateY(180deg);
+      }
+      100% {
+        transform: rotateX(-20deg) rotateY(360deg);
+      }
+    }
+  </style>
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Multi-QR Encoder & Decoder | Abhishek Rajput</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Multi-QR Encoder & Decoder by Abhishek Rajput. Encode and decode large text using multiple QR tiles combined into a single image, with optional encryption and SHA-256 integrity checks."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <!-- NAVBAR -->
+    <header
+      class="border-b border-slate-800 bg-slate-950/90 backdrop-blur sticky top-0 z-20"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4"
+      >
+        <div class="flex items-center gap-2">
+          <div
+            class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-xs font-semibold"
+          >
+            QR
+          </div>
+          <div class="flex flex-col leading-tight">
+            <span class="text-sm font-semibold"
+              >Multi-QR Encoder & Decoder</span
+            >
+            <span class="text-[11px] text-slate-400"
+              >Large-data QR web app</span
+            >
+          </div>
+        </div>
+        <nav class="flex items-center gap-4 text-xs">
+          <a
+            href="/app"
+            class="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2 text-xs font-medium shadow-sm hover:bg-indigo-500 active:translate-y-[1px] transition"
+          >
+            <span>Open App</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <!-- HERO -->
+      <section
+        class="bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 border-b border-slate-900"
+      >
+        <div
+          class="max-w-6xl mx-auto px-4 py-12 grid gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)] items-center"
+        >
+          <div>
+            <p
+              class="text-[11px] inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-slate-800 bg-slate-950/60 text-slate-300 mb-3"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Encode & decode
+            </p>
+            <h1 class="text-3xl md:text-4xl font-semibold mb-8">
+              Encode and decode
+              <span class="text-indigo-400">more data</span> than a single QR
+              can handle.
+            </h1>
+            <p class="text-sm text-slate-300 mb-5 max-w-xl">
+              Multi-QR Encoder & Decoder lets you convert large text into
+              multiple QR tiles combined into a single image, then restore it
+              back. Use optional passphrase encryption and SHA-256 integrity
+              checks for peace of mind.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <a
+                href="/app"
+                class="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium shadow-sm hover:bg-indigo-500 active:translate-y-[1px] transition"
+              >
+                <span>Open the App</span>
+              </a>
+              <span class="text-[11px] text-slate-400">
+                Runs entirely in your browser with a Flask backend.
+              </span>
+            </div>
+          </div>
+
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl shadow-slate-950/40 p-4 text-xs"
+          >
+            <p class="text-slate-300 mb-2 font-medium">At a glance</p>
+            <ul class="space-y-2 text-slate-300">
+              <li class="flex gap-2">
+                <span class="mt-0.5 text-slate-500">•</span>
+                <span
+                  >Encode large text into a single image containing multiple
+                  numbered QR tiles.</span
+                >
+              </li>
+              <li class="flex gap-2">
+                <span class="mt-0.5 text-slate-500">•</span>
+                <span
+                  >Decode the same image later to recover the original text
+                  inside the app.</span
+                >
+              </li>
+              <li class="flex gap-2">
+                <span class="mt-0.5 text-slate-500">•</span>
+                <span
+                  >Optional encryption using a passphrase so only you can decode
+                  the content.</span
+                >
+              </li>
+              <li class="flex gap-2">
+                <span class="mt-0.5 text-slate-500">•</span>
+                <span
+                  >Built-in SHA-256 integrity check to detect corruption or
+                  tampering.</span
+                >
+              </li>
+            </ul>
+            <p class="mt-3 text-[11px] text-slate-500">
+              Ideal for text payloads. Recommended range:
+              <span class="font-mono">15k–50k</span> characters, with practical
+              support up to around <span class="font-mono">~100k</span>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section id="features" class="border-b border-slate-900 bg-slate-950">
+        <div
+          class="max-w-6xl mx-auto px-4 py-20 grid gap-5 md:grid-cols-3 text-xs"
+        >
+          <div class="flex gap-3 items-start">
+            <div
+              class="mt-0.5 h-7 w-7 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[14px]"
+            >
+              🔐
+            </div>
+            <div>
+              <p class="font-medium text-slate-200 mb-1">
+                Passphrase encryption
+              </p>
+              <p class="text-slate-400">
+                Encrypt the entire payload with a passphrase before it’s split
+                into chunks and encoded into QR tiles.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div
+              class="mt-0.5 h-7 w-7 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[14px]"
+            >
+              🧩
+            </div>
+            <div>
+              <p class="font-medium text-slate-200 mb-1">Multi-QR tiling</p>
+              <p class="text-slate-400">
+                Bypass single-QR limits by distributing data across many
+                numbered QR codes inside one combined image.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div
+              class="mt-0.5 h-7 w-7 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[14px]"
+            >
+              ✅
+            </div>
+            <div>
+              <p class="font-medium text-slate-200 mb-1">
+                Integrity verification
+              </p>
+              <p class="text-slate-400">
+                Every decode recomputes SHA-256 and verifies it against the
+                stored hash before returning your text.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section id="how-it-works" class="bg-slate-950">
+        <div
+          class="max-w-6xl mx-auto px-4 py-8 grid gap-6 md:grid-cols-2 text-xs"
+        >
+          <div>
+            <h2 class="text-sm font-semibold mb-2">How it works</h2>
+            <ol class="space-y-2 text-slate-300">
+              <li>
+                <span class="font-semibold">1.</span> On the app page, you paste
+                long text into the encoder.
+              </li>
+              <li>
+                <span class="font-semibold">2.</span> The app wraps your text
+                with a SHA-256 checksum and (optionally) encrypts it using your
+                passphrase.
+              </li>
+              <li>
+                <span class="font-semibold">3.</span> The payload is split into
+                chunks and each chunk becomes an individual QR tile.
+              </li>
+              <li>
+                <span class="font-semibold">4.</span> All tiles are combined
+                into a single PNG image with numbered QR tiles for easier
+                management.
+              </li>
+              <li>
+                <span class="font-semibold">5.</span> Later, you upload that big
+                QR image back into the app to decode, decrypt, verify, and
+                recover the original text.
+              </li>
+            </ol>
+          </div>
+          <div class="p-4 flex flex-col items-center justify-center">
+            <div class="qr-scene">
+              <div class="qr-cube">
+                <div class="qr-cube-face qr-cube-face--front"></div>
+                <div class="qr-cube-face qr-cube-face--back"></div>
+                <div class="qr-cube-face qr-cube-face--right"></div>
+                <div class="qr-cube-face qr-cube-face--left"></div>
+                <div class="qr-cube-face qr-cube-face--top"></div>
+                <div class="qr-cube-face qr-cube-face--bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-900 bg-slate-950">
+      <div
+        class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500"
+      >
+        <p>
+          © 2025 Multi-QR Encoder & Decoder · Built by
+          <span class="text-slate-200">Abhishek Rajput</span>.
+        </p>
+        <p class="flex items-center gap-2">
+          <span>GitHub:</span>
+          <a
+            href="https://github.com/Abhishek-2502"
+            target="_blank"
+            class="text-slate-200 hover:text-white"
+          >
+            Abhishek-2502
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
