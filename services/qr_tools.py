@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 from pyzbar.pyzbar import decode as decode_qr
 from cryptography.fernet import Fernet, InvalidToken
 
+Image.MAX_IMAGE_PIXELS = 500_000_000
 
 # -------- Helpers -------- #
 

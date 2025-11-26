@@ -357,6 +357,19 @@
       </div>
     </footer>
 
+    <!-- GLOBAL LOADER OVERLAY -->
+    <div
+      id="global-loader"
+      class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm"
+    >
+      <div class="flex flex-col items-center gap-3">
+        <div
+          class="h-10 w-10 border-4 border-slate-700 border-t-indigo-500 rounded-full animate-spin"
+        ></div>
+        <p class="text-xs text-slate-300">Processing, please wait...</p>
+      </div>
+    </div>
+
     <script>
       const textarea = document.getElementById("data");
       const chunkInput = document.getElementById("chunk_size");
@@ -402,6 +415,20 @@
               copyBtn.innerText = original;
             }, 1500);
           }
+        });
+      }
+
+      // 🔹 GLOBAL LOADER ON FORM SUBMIT
+      const loader = document.getElementById("global-loader");
+      const forms = document.querySelectorAll("form");
+
+      if (loader && forms.length > 0) {
+        forms.forEach((form) => {
+          form.addEventListener("submit", () => {
+            // Show loader just before sending request
+            loader.classList.remove("hidden");
+            loader.classList.add("flex");
+          });
         });
       }
     </script>
