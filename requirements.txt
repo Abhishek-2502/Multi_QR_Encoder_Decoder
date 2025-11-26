@@ -1,5 +1,5 @@
 Flask
-qrcode[pil]
+qrcode
 pillow
 pyzbar
 cryptography
