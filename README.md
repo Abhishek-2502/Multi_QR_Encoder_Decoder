@@ -129,8 +129,8 @@ To keep your data safe, the app supports **passphrase-based encryption** and ver
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/multi-qr-encoder-decoder.git
-cd multi-qr-encoder-decoder
+git clone https://github.com/Abhishek-2502/Multi_QR_Encoder_Decoder
+cd Multi_QR_Encoder_Decoder
 ```
 
 ### 2. Create & Activate Virtual Environment (Recommended)
@@ -264,4 +264,5 @@ See the [`LICENSE`](./LICENSE) file for details.
 ## Author
 
 **Abhishek Rajput**
+
 
